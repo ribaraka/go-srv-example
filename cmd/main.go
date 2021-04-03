@@ -15,50 +15,44 @@ type User struct {
 	FirstName string `json:"firstName" validate:"required,lte=5"`
 	LastName  string `json:"lastName" validate:"required,lte=5"`
 	Email     string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,gte=8,lte=64"`
+	Password  string `json:"password" validate:"required,gte=8,lte=64"`
 }
 
 func main() {
 	form := http.FileServer(http.Dir("./form"))
 	http.Handle("/", form)
 	http.HandleFunc("/form", POSTHandler)
-	log.Println("Listening...")
-	v := validator.New()
-	a := User{
-		Email: "asd@afsaasdasdw2e",
-	}
-	errV := v.Struct(a)
-
-	for _, e := range errV.(validator.ValidationErrors) {
-		fmt.Println(e)
-	}
-
-	err := http.ListenAndServe(":8081", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	log.Println("Server has been started...")
+	log.Fatal(http.ListenAndServe(":8081", nil))
 }
 
 func POSTHandler(w http.ResponseWriter, r *http.Request) {
-
 	db := OpenConnection()
 
-	var u User
-	err := json.NewDecoder(r.Body).Decode(&u)
+	var user User
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	fmt.Printf("%+v\n", u)
-	w.WriteHeader(201)
+	v := validator.New()
+	err = v.Struct(user)
+	if err != nil {
+		for _, e := range err.(validator.ValidationErrors) {
+			fmt.Println(e)
+		}
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	fmt.Printf("%+v\n", user)
 	sqlStatement := `INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)`
-	_, err = db.Exec(sqlStatement, u.FirstName, u.LastName, u.Email, u.Password)
+	_, err = db.Exec(sqlStatement, user.FirstName, user.LastName, user.Email, user.Password)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		panic(err)
 	}
+
 	w.WriteHeader(http.StatusCreated)
 	defer db.Close()
 }
