@@ -4,19 +4,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/ribaraka/go-srv-example/pkg/models"
 	"log"
 	"net/http"
 
 	_ "github.com/lib/pq"
 	"github.com/go-playground/validator/v10"
 )
-
-type User struct {
-	FirstName string `json:"firstName" validate:"required,lte=5"`
-	LastName  string `json:"lastName" validate:"required,lte=5"`
-	Email     string `json:"email" validate:"required,email"`
-	Password  string `json:"password" validate:"required,gte=8,lte=64"`
-}
 
 func main() {
 	form := http.FileServer(http.Dir("./form"))
@@ -27,9 +21,7 @@ func main() {
 }
 
 func POSTHandler(w http.ResponseWriter, r *http.Request) {
-	db := OpenConnection()
-
-	var user User
+	var user models.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -43,9 +35,10 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(e)
 		}
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
-	fmt.Printf("%+v\n", user)
+	db := OpenConnection()
 	sqlStatement := `INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)`
 	_, err = db.Exec(sqlStatement, user.FirstName, user.LastName, user.Email, user.Password)
 	if err != nil {
