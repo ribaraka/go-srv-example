@@ -1,0 +1,24 @@
+The application is a simple REST API server that will expose endpoints
+to allow registration users on database.
+The application use an ordinary registration web form,
+PostgreSQL database table and Docker.
+
+To work properly, you need to perform several configurations:
+
+1. PostgreSQL database.
+Create and run (in terminal) a container with postgres image.
+
+docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=go_project -d -p "33333":"5432" postgres
+
+2. At PSQL terminal create table
+
+CREATE TABLE users
+(
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(20) NOT NULL,
+    lastname VARCHAR(20) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(64) NOT NULL
+);
+
+3. That's will be enough to start with.
