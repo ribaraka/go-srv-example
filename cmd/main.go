@@ -34,7 +34,7 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		for _, e := range err.(validator.ValidationErrors) {
 			fmt.Println(e)
 		}
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -42,8 +42,8 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 	sqlStatement := `INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)`
 	_, err = db.Exec(sqlStatement, user.FirstName, user.LastName, user.Email, user.Password)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
@@ -72,6 +72,5 @@ func OpenConnection() *sql.DB {
 	if err != nil {
 		panic(err)
 	}
-
 	return db
 }
