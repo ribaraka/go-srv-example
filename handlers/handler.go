@@ -7,7 +7,6 @@ import (
 	"github.com/ribaraka/go-srv-example/pkg/models"
 	"github.com/ribaraka/go-srv-example/postgres"
 	"net/http"
-
 )
 
 
@@ -19,6 +18,7 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println(user.Password)
 	v := validator.New()
 	err = v.Struct(user)
 	if err != nil {
@@ -30,8 +30,8 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db := postgres.OpenConnection()
-	sqlStatement := `INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)`
-	_, err = db.Exec(sqlStatement, user.FirstName, user.LastName, user.Email, user.Password)
+	sqlStatement := `INSERT INTO users (firstName, lastName, email) VALUES ($1, $2, $3)`
+	_, err = db.Exec(sqlStatement, user.FirstName, user.LastName, user.Email)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
