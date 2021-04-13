@@ -2,25 +2,19 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/lib/pq"
+	"github.com/ribaraka/go-srv-example/internal/conf"
+	"log"
 )
-
-const (
-	host     = "localhost"
-	port     = 33333
-	user     = "postgres"
-	password = "password"
-	dbname   = "go_project"
-)
-
 
 func OpenConnection() *sql.DB {
-	PSQLInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
 
-	db, err := sql.Open("postgres", PSQLInfo)
+	config, err := conf.LoadConfig(".")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
+
+	db, err := sql.Open("postgres", config.DBSource)
 	if err != nil {
 		panic(err)
 	}

@@ -1,7 +1,6 @@
 CREATE TABLE credentials
 (
-    user_id       INT REFERENCES users (id),
-    password_hash VARCHAR(20),
-    salt          VARCHAR(20),
+    user_id       SERIAL REFERENCES users(id),
+    password_hash VARCHAR(100),
     updated_at    DATE
 );
