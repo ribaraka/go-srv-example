@@ -1,0 +1,3 @@
+[submodule "ui/registration-form"]
+	path = ui/registration-form
+	url = https://github.com/ribaraka/registration-form
