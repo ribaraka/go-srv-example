@@ -1,2 +1,2 @@
-SERVER_HOST: "8081"
-DB_SOURCE: "postgresql://postgres:password@localhost:33333/go_project?sslmode=disable"
+SERVER_LOCALHOST: "8081"
+DB_URL: "postgresql://postgres:password@localhost:33333/go_project?sslmode=disable"
