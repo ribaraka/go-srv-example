@@ -8,8 +8,11 @@ To work properly, you need to perform several configurations:
 1. PostgreSQL database.
 Create and run a container with postgres image.
 
-docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=go_project -d -p "33333":"5432" postgres
+$docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=go_project -d -p "33333":"5432" postgres
 
 2.Using code from migration directory create tables at PSQL terminal.
 
-3. That's will be enough to start with.
+3.From cmd directory launch 
+$go run main.go
+
+4.In browser go to localhost:8081
