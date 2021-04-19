@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/ribaraka/go-srv-example/pkg/models"
-	"github.com/ribaraka/go-srv-example/pkg/password"
 	"github.com/ribaraka/go-srv-example/postgres"
 	"net/http"
 )
@@ -19,9 +18,6 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pwd := []byte(user.Password)
-	hash := password.HashAndSalt(pwd)
-
 	v := validator.New()
 	err = v.Struct(user)
 	if err != nil {
@@ -32,6 +28,10 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	postgres.SQLStatements(user)
+/*
+   	pwd := []byte(user.Password)
+   	hash := password.HashAndSalt(pwd)
 	db := postgres.OpenConnection()
 	sqlAddUser := `INSERT INTO users (firstName, lastName, email) VALUES ($1, $2, $3)`
 	_, err = db.Exec(sqlAddUser, user.FirstName, user.LastName, user.Email)
@@ -49,4 +49,5 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	defer db.Close()
+*/
 }
