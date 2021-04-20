@@ -17,6 +17,8 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	// TODO: when http request body reading is finished you need to close it.
+	// r.Body.Close()
 
 	v := validator.New()
 	err = v.Struct(user)
@@ -28,26 +30,8 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// TODO: please handle errors properly here
+	//ctx := r.Context()
 	postgres.SQLStatements(user)
-/*
-   	pwd := []byte(user.Password)
-   	hash := password.HashAndSalt(pwd)
-	db := postgres.OpenConnection()
-	sqlAddUser := `INSERT INTO users (firstName, lastName, email) VALUES ($1, $2, $3)`
-	_, err = db.Exec(sqlAddUser, user.FirstName, user.LastName, user.Email)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	sqlAddCredential := `INSERT INTO credentials (password_hash) VALUES ($1)`
-	_, err = db.Exec(sqlAddCredential, hash)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
-	defer db.Close()
-*/
+	// TODO: do not store commented code
 }
