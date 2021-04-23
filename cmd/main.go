@@ -15,10 +15,21 @@ func main() {
 		log.Fatal("cannot load config:", err)
 	}
 
+	pool, err := postgres.OpenConnection(config)
+	if err != nil {
+		log.Fatal("cannot initiate connecton to database:", err)
+	}
+
+	defer pool.Close()
+
+	signupRepo := postgres.NewSignUpRepository(pool)
+
+	postHandler := handlers.NewPostHandler(signupRepo)
+
+
 	r := mux.NewRouter()
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./form"))).Methods(http.MethodGet)
-	r.HandleFunc("/form", handlers.POSTHandler).Methods(http.MethodPost)
+	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)
 	log.Println("Server has been started...")
 	log.Fatal(http.ListenAndServe(config.ServerLocalHost, r))
-	postgres.OpenConnection()
 }
