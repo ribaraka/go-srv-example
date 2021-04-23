@@ -17,8 +17,7 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	// TODO: when http request body reading is finished you need to close it.
-	// r.Body.Close()
+	defer r.Body.Close()
 
 	v := validator.New()
 	err = v.Struct(user)
@@ -33,5 +32,4 @@ func POSTHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: please handle errors properly here
 	//ctx := r.Context()
 	postgres.SQLStatements(user)
-	// TODO: do not store commented code
 }
