@@ -1,17 +1,16 @@
 package password
 
 import (
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 )
 
-func HashAndSalt(pwd []byte) string {
+func HashAndSalt(pwd []byte) (string, error) {
 
-	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.DefaultCost)
 	if err != nil {
-		// TODO: please handle this error
-		log.Println(err)
+		return "", fmt.Errorf("failed to hash password: %w", err)
 	}
 
-	return string(hash)
+	return string(hash), nil
 }
