@@ -30,7 +30,6 @@ func NewPostHandler(repo *postgres.SignUpRepository) func(http.ResponseWriter, *
 			return
 		}
 
-		// TODO: please handle errors properly here
 		ctx := r.Context()
 		err = repo.SQLStatements(ctx, user)
 		if err != nil {
