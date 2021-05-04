@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  db:
+    container_name: postgres_db
+    image: postgres
+    ports:
+      - 0.0.0.0:33333
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: go_project
+
+   server:
+     container_name: go_server
+     build: .
+     ports:
+       - 8081:8081
+     depends_on:
+       - db
