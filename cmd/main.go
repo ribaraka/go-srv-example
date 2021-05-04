@@ -17,7 +17,7 @@ func main() {
 
 	pool, err := postgres.OpenConnection(config)
 	if err != nil {
-		log.Fatal("cannot initiate connecton to database:", err)
+		log.Fatal("cannot initiate connection to database:", err)
 	}
 
 	defer pool.Close()
