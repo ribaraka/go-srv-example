@@ -1,10 +1,10 @@
-package conf
+package config
 
 import "github.com/spf13/viper"
 
 type Config struct {
 	ServerLocalHost string `mapstructure:"ServerLocalhost"`
-	DBURL           string `mapstructure:"dbURL"`
+	DBURL           string `mapstructure:"DBURL"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

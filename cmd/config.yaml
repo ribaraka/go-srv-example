@@ -1,2 +1,2 @@
-ServerLocalhost: "8081"
-dbURL: "postgresql://postgres:password@localhost:33333/go_project?sslmode=disable"
+ServerLocalhost: ":8081"
+DBURL: "postgresql://postgres:password@localhost:33333/go_project?sslmode=disable"

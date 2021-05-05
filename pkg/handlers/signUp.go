@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/ribaraka/go-srv-example/pkg/models"
-	"github.com/ribaraka/go-srv-example/postgres"
+	"github.com/ribaraka/go-srv-example/pkg/postgres"
 )
 
 func NewPostHandler(repo *postgres.SignUpRepository) func(http.ResponseWriter, *http.Request) {

@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 	"fmt"
-	"github.com/ribaraka/go-srv-example/internal/conf"
+	"github.com/ribaraka/go-srv-example/config"
 	"github.com/ribaraka/go-srv-example/pkg/models"
 	"github.com/ribaraka/go-srv-example/pkg/password"
 
@@ -14,9 +14,9 @@ type SignUpRepository struct {
 	pool *pgxpool.Pool
 }
 
-func NewSignUpRepository(pool *pgxpool.Pool) *SignUpRepository {
+func NewSignUpRepository(pxPool *pgxpool.Pool) *SignUpRepository {
 	return &SignUpRepository{
-		pool: pool,
+		pool: pxPool,
 	}
 }
 
@@ -27,8 +27,10 @@ func (sr *SignUpRepository)SQLStatements(ctx context.Context, user models.User) 
 		return 	fmt.Errorf( "Unable to insert data into database:: %v\n", err)
 	}
 
-	pwd := []byte(user.Password)
-	hash, err := password.HashAndSalt(pwd)
+	hash, err := password.HashAndSalt([]byte(user.Password))
+	if err != nil {
+		return fmt.Errorf("failed to hash password: %w", err)
+	}
 
 	sqlAddCredential := `INSERT INTO credentials (password_hash) VALUES ($1)`
 	_, err = sr.pool.Exec(ctx, sqlAddCredential, hash)
@@ -39,7 +41,7 @@ func (sr *SignUpRepository)SQLStatements(ctx context.Context, user models.User) 
 	return nil
 }
 
-func OpenConnection(c conf.Config) (*pgxpool.Pool, error) {
+func OpenConnection(c config.Config) (*pgxpool.Pool, error) {
 	pool, err := pgxpool.Connect(context.Background(), c.DBURL)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to connection to database: %v\n", err)
