@@ -1,16 +1,21 @@
 package main
 
 import (
+	"flag"
+	"log"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/ribaraka/go-srv-example/config"
 	"github.com/ribaraka/go-srv-example/pkg/handlers"
 	"github.com/ribaraka/go-srv-example/pkg/postgres"
-	"log"
-	"net/http"
 )
 
 func main() {
-	conf, err := config.LoadConfig(".")
+	var path = flag.String("config", ".", "to specify path to config file please use -config")
+	flag.Parse()
+	log.Printf("config path is %s", *path)
+	conf, err := config.LoadConfig(*path)
 	if err != nil {
 		log.Fatal("cannot load config:", err)
 	}
