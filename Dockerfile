@@ -15,7 +15,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=${ARCH} go build \
 
 FROM alpine:latest
 COPY --from=builder /go/src/github.com/ribaraka/go-srv-example/app /app
-#COPY --from=builder /go/src/github.com/ribaraka/go-srv-example/config /app
-
 
 ENTRYPOINT ["/app"]
