@@ -7,10 +7,9 @@ type Config struct {
 	DBURL           string `mapstructure:"DBURL"`
 }
 
-func LoadConfig(path string) (config Config, err error) {
+func LoadConfig(path string, file string) (config Config, err error) {
 	viper.AddConfigPath(path)
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
+	viper.SetConfigFile(file)
 	viper.AutomaticEnv()
 
 	err = viper.ReadInConfig()
