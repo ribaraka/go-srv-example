@@ -12,7 +12,8 @@ import (
 )
 
 func main() {
-	var confile =  flag.String("confile", "./cmd/config.yaml", "to specify config file please use -confile")
+
+	var confile = flag.String("confile", "./cmd/config.yaml", "to specify config file please use flag -confile")
 	flag.Parse()
 	conf, err := config.LoadConfig(*confile)
 
