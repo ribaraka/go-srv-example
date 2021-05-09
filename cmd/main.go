@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	var confile =  flag.String("confile", "config.yaml", "to specify config file please use -confile")
+	var confile =  flag.String("confile", "./cmd/config.yaml", "to specify config file please use -confile")
 	flag.Parse()
 	conf, err := config.LoadConfig(*confile)
 
@@ -28,9 +28,8 @@ func main() {
 
 	signUpRepo := postgres.NewSignUpRepository(pool)
 	postHandler := handlers.NewPostHandler(signUpRepo)
-
 	r := mux.NewRouter()
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./form"))).Methods(http.MethodGet)
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir(conf.StaticAssets))).Methods(http.MethodGet)
 	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)
 	log.Println("Server has been started...")
 	log.Fatal(http.ListenAndServe(conf.ServerLocalHost, r))

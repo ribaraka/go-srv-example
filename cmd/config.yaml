@@ -1,2 +1,3 @@
 ServerLocalhost: ":8081"
 DBURL: "postgresql://postgres:password@localhost:33333/go_project?sslmode=disable"
+StaticAssets : "/home/ribaraka/projects/src/github.com/ribaraka/go-srv-example/cmd/form"
