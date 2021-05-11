@@ -1,10 +1,10 @@
 version: "3.9"
 services:
-  db:
+  database:
     image: postgres
     restart: always
-    ports:
-      - 33333:5432
+    volumes:
+    - db-vol:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -14,8 +14,14 @@ services:
     container_name: go_server
     build: .
     image: server
+    restart: always
     ports:
       - 8081:8081
+    volumes:
+    - ./cmd/:/config
+    command: ["-confile",  "/config/config.yaml"]
     depends_on:
-      - db
-#volume + env var + arg -config
+      - database
+
+volumes:
+  db-vol:

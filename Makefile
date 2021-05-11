@@ -1,3 +1,5 @@
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
 database:
 	docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=go_project -d -p "33333":"5432" --name database postgres:latest
 
@@ -10,7 +12,7 @@ dev-build:
 	docker build -t server .
 
 dev-run:
-	docker run -p 8081:8081 --rm --net=host -v /home/ribaraka/projects/src/github.com/ribaraka/go-srv-example/cmd/:/config server:latest -confile ./config/config.yaml
+	docker run -p 8081:8081 --rm -v $(ROOT_DIR)/cmd:/config server:latest -confile /config/config.yaml
 
 form_ui:
 	npm install
