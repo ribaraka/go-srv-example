@@ -1,0 +1,16 @@
+serverHost: "localhost:8081"
+
+#config db and ui for docker
+#dbUrl: "postgresql://postgres:password@database:5432/go_project?sslmode=disable"
+#staticAssets : "/config/form"
+
+#config db and ui without docker
+dbUrl: "postgresql://postgres:password@localhost:5433/go_project?sslmode=disable"
+staticAssets: "./cmd/form"
+
+mail:
+  host: "smtp.gmail.com"
+  port: 587
+  sender: "email sender <your@email.com>"
+  user: "your@email.com"
+  password: "yourEmailPassword"
