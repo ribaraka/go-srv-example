@@ -32,7 +32,7 @@ func NewPostHandler(repo *postgres.SignUpRepository, c config.Config) func(http.
 		}
 
 		ctx := r.Context()
-		err = repo.SQLStatements(ctx, user, c)
+		err = repo.AddUser(ctx, user, c)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

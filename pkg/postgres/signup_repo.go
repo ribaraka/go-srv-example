@@ -20,11 +20,17 @@ func NewSignUpRepository(pxPool *pgxpool.Pool) *SignUpRepository {
 	}
 }
 
-func (sr *SignUpRepository) SQLStatements(ctx context.Context, user models.User, c config.Config) error {
-	insertUser := `INSERT INTO users (firstName, lastName, email) VALUES ($1, $2, $3)`
-	_, err := sr.pool.Exec(ctx, insertUser, user.FirstName, user.LastName, user.Email)
+func (sr *SignUpRepository) AddUser(ctx context.Context, user models.User, conf config.Config) error {
+	tx, err := sr.pool.Begin(ctx)
 	if err != nil {
-		return fmt.Errorf("Unable to insert data into database:: %v\n", err)
+		return fmt.Errorf("Unable to commit transaction: %v\n", err)
+	}
+	defer tx.Rollback(ctx)
+
+	insertUser := `INSERT INTO users (firstName, lastName, email) VALUES ($1, $2, $3)`
+	_, err = tx.Exec(ctx, insertUser, user.FirstName, user.LastName, user.Email)
+	if err != nil {
+		return fmt.Errorf("Unable to insert data into database: %v\n", err)
 	}
 
 	hash, err := crypto.HashAndSalt([]byte(user.Password))
@@ -32,21 +38,25 @@ func (sr *SignUpRepository) SQLStatements(ctx context.Context, user models.User,
 		return fmt.Errorf("failed to hash crypto: %w", err)
 	}
 	insertPasswordHash := `INSERT INTO credentials (password_hash) VALUES ($1)`
-	_, err = sr.pool.Exec(ctx, insertPasswordHash, hash)
+	_, err = tx.Exec(ctx, insertPasswordHash, hash)
 	if err != nil {
 		return fmt.Errorf("Unable to insert hash into password_hash:: %v\n", err)
 	}
 
 	emailToken := crypto.GenerateToken(32)
 	insertEmailToken := `INSERT INTO email_verification_tokens (verification_token) VALUES ($1)`
-	_, err = sr.pool.Exec(ctx, insertEmailToken, emailToken)
+	_, err = tx.Exec(ctx, insertEmailToken, emailToken)
 	if err != nil {
 		return fmt.Errorf("Unable to insert token: %v\n", err)
 	}
+	err = tx.Commit(ctx)
+	if err != nil {
+		return fmt.Errorf("Unable insert user to database %v\n", err)
+	}
 
-	err = email.SendVerifyMassage(c, user.Email, emailToken)
-	if err != nil{
-		return fmt.Errorf("Unable to send email %v\n", err)
+	err = email.SendVerifyMassage(conf, user.Email, emailToken)
+	if err != nil {
+		return fmt.Errorf("unable to send email %v\n", err)
 	}
 
 	return nil
@@ -66,7 +76,7 @@ func (sr *SignUpRepository) GetByID(ctx context.Context, id int) (*models.TableU
 func (sr *SignUpRepository) UpdateUserByEmail(ctx context.Context, user *models.TableUser) error {
 	_, err := sr.pool.Exec(ctx,
 		`UPDATE users SET firstname = $2, lastname = $3, email = $4, verified = $5 WHERE email = $1`,
-	user.Email, user.Firstname, user.Lastname, user.Email, user.Verified)
+		user.Email, user.Firstname, user.Lastname, user.Email, user.Verified)
 	if err != nil {
 		return fmt.Errorf("Unable to update row: %v\n", err)
 	}
