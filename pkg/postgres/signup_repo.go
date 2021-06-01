@@ -83,3 +83,14 @@ func (sr *SignUpRepository) UpdateUserByEmail(ctx context.Context, user *models.
 
 	return nil
 }
+
+func (sr *SignUpRepository) GetByEmail(ctx context.Context, email string) (*models.TableUser, error) {
+	user := &models.TableUser{}
+	err := sr.pool.QueryRow(ctx,
+		`SELECT * FROM users WHERE email=$1`, email).Scan(&user.Id, &user.Firstname, &user.Lastname, &user.Email, &user.Verified)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
