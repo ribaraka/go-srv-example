@@ -29,9 +29,12 @@ func main() {
 	postHandler := handlers.NewPostHandler(signUpRepo, conf)
 	confirmEmailRepo := postgres.NewVerificationRepository(pool)
 	getHandler := handlers.ConfirmEmail(confirmEmailRepo, signUpRepo)
+	checkEmailRepo := postgres.NewSignUpRepository(pool)
+	checkEmailHandler := handlers.CheckBusyEmail(checkEmailRepo)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/verify", getHandler)
+	r.HandleFunc("/possession", checkEmailHandler)
 	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir(conf.StaticAssets))).Methods(http.MethodGet)
 	log.Println("Server has been started...")
