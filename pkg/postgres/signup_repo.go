@@ -49,14 +49,15 @@ func (sr *SignUpRepository) AddUser(ctx context.Context, user models.User, conf 
 	if err != nil {
 		return fmt.Errorf("Unable to insert token: %v\n", err)
 	}
-	err = tx.Commit(ctx)
-	if err != nil {
-		return fmt.Errorf("Unable insert user to database %v\n", err)
-	}
 
 	err = email.SendVerifyMassage(conf, user.Email, emailToken)
 	if err != nil {
-		return fmt.Errorf("unable to send email %v\n", err)
+		return fmt.Errorf("unable to send email %w", err)
+	}
+
+	err = tx.Commit(ctx)
+	if err != nil {
+		return fmt.Errorf("Unable insert user to database %v\n", err)
 	}
 
 	return nil
