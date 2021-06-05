@@ -58,6 +58,7 @@ func (sr *SignUpRepository) AddUser(ctx context.Context, user models.User, conf 
 	err = tx.Commit(ctx)
 	if err != nil {
 		return fmt.Errorf("Unable insert user to database %v\n", err)
+
 	}
 
 	return nil
