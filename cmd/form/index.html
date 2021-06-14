@@ -1,43 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration form</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 </head>
-<body>
+<body class="bg-light">
+<!--Buttons-->
+<div class="d-flex justify-content-center">
+  <!-- sign up btn -->
+  <div class="text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupPage">Sign up <i
+      class="fas fa-user-plus ml-3"></i>
+    </button>
+  </div>
 
-<main class="form-signin">
+  <!--Sign In Btn -->
+  <div class="text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signinPage">Sign in <i
+      class="fas fa-sign-in-alt ml-3"></i>
+    </button>
+  </div>
+</div>
 
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label for="firstname">First name</label>
-        <input type="text" name="firstname" id="firstname" class="form-control">
+<!--Sign Up  Content-->
+<div class="modal fade" id="signupPage" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center w-100 font-weight-bold">Sign Up</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body mx-sm">
+        <div class="row">
+          <div class="col">
+            <div class="md-form mb-5">
+              <i class="fas fa-user prefix"></i>
+              <label for="firstname"></label>
+              <input type="text" name="firstname" id="firstname" class="form-control" placeholder="First name">
+            </div>
+          </div>
+          <div class="col">
+
+            <div class="md-form mb-5">
+              <label for="lastname"></label>
+              <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Last name">
+            </div>
+          </div>
+        </div>
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix"></i>
+          <label for="email"></label>
+          <input id="email" name="email" class="form-control" type="text" placeholder="E-mail">
+        </div>
+        <div class="md-form mb-5">
+          <i class="fas fa-lock prefix"></i>
+          <label for="password"></label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" id="btn-sign" class="btn-primary">Sign up</button>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="lastname">Last name</label>
-        <input type="text" name="lastname" id="lastname" class="form-control">
+  </div>
+</div>
+
+
+
+
+<!-- Signin content-->
+<div class="modal fade" id="signinPage" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header text-center">
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold">Sign In</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body mx-sm">
+
+      <div class="md-form mb-lg-4">
+        <i class="fas fa-envelope prefix"></i>
+        <label for="emailIn"></label>
+        <input id="emailIn" name="emailIn" class="form-control" type="text" placeholder="E-mail">
+      </div>
+
+      <p class="md-form mb-5">
+        <i class="fas fa-lock prefix"></i>
+        <label for="passwordIn"></label>
+        <input type="password" name="passwordIn" id="passwordIn" class="form-control" placeholder="Password">
+        <p class="font-small blue-text d-flex justify-content-end">Forgot<a href="#"
+                                                                            class="blue-text ml-1">Password?</a></p>
+        <p class="form-check">
+          <label class="form-check-label" for="rememberMe">Remember me</label>
+          <input type="checkbox" class="form-check-input font-small d-flex justify-content-start" id="rememberMe">
+        </p>
+        <div class="text-center mb-3">
+          <button type="submit" id="btn-signIn" class="btn btn-primary">Sign in</button>
+        </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+      <p class="w-100 dark-grey-text font-weight-bold d-flex justify-content-center">Sign in with:</p>
+
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-primary z-depth-1a"><i class="fab fa-facebook-f text-center"></i></button>
+          <button type="button" class="btn btn-purple z-depth-1a"><i class="fab fa-twitter text-center"></i></button>
+          <button type="button" class="btn btn-red z-depth-1a"><i class="fab fa-google-plus-g text-center"></i></button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-      <label for="email">E-mail</label>
-      <input id="email" name="email" class="form-control" type="text">
-  </div>
+</div>
+</div>
+</div>
 
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" class="form-control">
-    <div id="dynamicText"></div>
-  </div>
-
-  <button type="submit" id="btn-sign" class="btn-primary">Sign up</button>
-</form>
-</main>
-<script type="text/javascript" src="main.8f8dc340bff649154ad3.bundle.js"></script></body>
+<script type="text/javascript" src="main.002379edae1ad624b1b0.bundle.js"></script></body>
 </html>
