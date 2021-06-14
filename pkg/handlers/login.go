@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/jackc/pgx/v4"
+	"github.com/ribaraka/go-srv-example/pkg/auth"
 	"github.com/ribaraka/go-srv-example/pkg/crypto"
 	"github.com/ribaraka/go-srv-example/pkg/models"
 	"github.com/ribaraka/go-srv-example/pkg/postgres"
@@ -52,7 +53,7 @@ func SignIn(l *postgres.LoginRepository, repo *postgres.SignUpRepository) http.H
 			if err == pgx.ErrNoRows {
 				err := fmt.Errorf("no password found %v", err)
 				log.Println(err)
-				http.Error(w, err.Error(), 404)
+				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
 			err := fmt.Errorf("pass not exist  %v ", err)
@@ -70,6 +71,16 @@ func SignIn(l *postgres.LoginRepository, repo *postgres.SignUpRepository) http.H
 		}
 
 		w.Write([]byte("correct password"))
+
+
+		jwtWrapper := auth.JwtWrap{
+			SecretKey:       "mySecretKey",
+		}
+
+		accessToken, err := jwtWrapper.GenerateAccessToken(user.Email,30)
+		refreshToken, err := jwtWrapper.GenerateRefreshToken(user.Email,72)
+
+
 		return
 	}
 }
