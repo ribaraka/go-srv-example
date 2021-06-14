@@ -1,10 +1,10 @@
 docker_run:
 	docker-compose up
 
-updateFormUi:
+buildFront:
 	cd ui/registration-form/ && npm run build-dev
 
-workOnFront:
+launchFront:
 	cd ui/registration-form/ && npm run start
 
 run:
