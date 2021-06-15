@@ -8,6 +8,7 @@ import (
 
 type JwtEncode struct {
 	SecretKey string
+
 }
 
 type JwtClaim struct {
@@ -16,6 +17,7 @@ type JwtClaim struct {
 }
 
 func (j *JwtEncode) GenerateAccessToken(email string, expMinute int) (signedToken string, err error) {
+
 	claims := &JwtClaim{
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
@@ -35,6 +37,7 @@ func (j *JwtEncode) GenerateAccessToken(email string, expMinute int) (signedToke
 
 func (j *JwtEncode) GenerateRefreshToken(email string, expHour int) (signedToken string, err error) {
 	claims := &JwtClaim{
+
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(expHour)).Unix(),
@@ -75,5 +78,4 @@ func (j *JwtEncode) ValidateToken(signedToken string) (claims *JwtClaim, err err
 	}
 
 	return
-
 }

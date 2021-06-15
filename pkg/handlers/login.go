@@ -53,7 +53,7 @@ func SignIn(l *postgres.LoginRepository, repo *postgres.SignUpRepository) http.H
 			if err == pgx.ErrNoRows {
 				err := fmt.Errorf("no password found %v", err)
 				log.Println(err)
-				http.Error(w, err.Error(), 404)
+				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
 			err := fmt.Errorf("pass not exist  %v ", err)
@@ -70,15 +70,16 @@ func SignIn(l *postgres.LoginRepository, repo *postgres.SignUpRepository) http.H
 			return
 		}
 
-		jwtWrapper := auth.JwtEncode{
+		jwtE := auth.JwtEncode{
 			SecretKey:       "mySecretKey",
 		}
 
-		accessToken, err := jwtWrapper.GenerateAccessToken(user.Email,15)
+		accessToken, err := jwtE.GenerateAccessToken(user.Email,1)
 		//refreshToken, err := jwtWrapper.GenerateRefreshToken(user.Email,72)
 
 		//w.Write([]byte("accessToken"+ accessToken + "refreshToken" + refreshToken))
 		w.Write([]byte(accessToken))
+
 		return
 	}
 }

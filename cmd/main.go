@@ -45,5 +45,5 @@ func main() {
 	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir(conf.StaticAssets))).Methods(http.MethodGet)
 	log.Println("Server has been started...")
-	log.Fatal(http.ListenAndServe(conf.ServerHost, r))
+	log.Fatal(http.ListenAndServe(":8081", r))
 }
