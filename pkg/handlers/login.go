@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/jackc/pgx/v4"
+	"github.com/ribaraka/go-srv-example/pkg/auth"
 	"github.com/ribaraka/go-srv-example/pkg/crypto"
 	"github.com/ribaraka/go-srv-example/pkg/models"
 	"github.com/ribaraka/go-srv-example/pkg/postgres"
@@ -69,7 +70,14 @@ func SignIn(l *postgres.LoginRepository, repo *postgres.SignUpRepository) http.H
 			return
 		}
 
-		w.Write([]byte("correct password"))
+		jwtWrapper := auth.JwtWrap{
+			SecretKey:       "mySecretKey",
+		}
+
+		accessToken, err := jwtWrapper.GenerateAccessToken(user.Email,1)
+		refreshToken, err := jwtWrapper.GenerateRefreshToken(user.Email,72)
+
+		w.Write([]byte("accessToken"+ accessToken + "refreshToken" + refreshToken))
 		return
 	}
 }

@@ -1,7 +1,13 @@
-run:
+docker_run:
 	docker-compose up
 
-form_ui:
-	npm install
+buildFront:
+	cd ui/registration-form/ && npm run build-dev
 
-.PHONY: run form_ui
+startFront:
+	cd ui/registration-form/ && npm run start
+
+goRun:
+	go run cmd/main.go
+
+.PHONY: docker_run form_ui run

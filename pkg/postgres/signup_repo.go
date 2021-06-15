@@ -6,7 +6,6 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/ribaraka/go-srv-example/config"
 	"github.com/ribaraka/go-srv-example/pkg/crypto"
-	"github.com/ribaraka/go-srv-example/pkg/email"
 	"github.com/ribaraka/go-srv-example/pkg/models"
 )
 
@@ -50,15 +49,16 @@ func (sr *SignUpRepository) AddUser(ctx context.Context, user models.User, conf 
 		return fmt.Errorf("Unable to insert token: %v\n", err)
 	}
 
-	err = email.SendVerifyMassage(conf, user.Email, emailToken)
-	if err != nil {
-		return fmt.Errorf("unable to send email %w", err)
-	}
 
 	err = tx.Commit(ctx)
 	if err != nil {
 		return fmt.Errorf("Unable insert user to database %v\n", err)
 	}
+
+	//err = email.SendVerifyMassage(conf, user.Email, emailToken)
+	//if err != nil {
+	//	return fmt.Errorf("unable to send email %w", err)
+	//}
 
 	return nil
 }
