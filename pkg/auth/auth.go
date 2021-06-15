@@ -1,11 +1,12 @@
 package auth
 
 import (
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )
 
-type JwtWrap struct {
+type JwtEncode struct {
 	SecretKey string
 }
 
@@ -14,7 +15,7 @@ type JwtClaim struct {
 	jwt.StandardClaims
 }
 
-func (j *JwtWrap) GenerateAccessToken(email string, expMinute int) (signedToken string, err error) {
+func (j *JwtEncode) GenerateAccessToken(email string, expMinute int) (signedToken string, err error) {
 	claims := &JwtClaim{
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
@@ -32,7 +33,7 @@ func (j *JwtWrap) GenerateAccessToken(email string, expMinute int) (signedToken 
 	return
 }
 
-func (j *JwtWrap) GenerateRefreshToken(email string, expHour int) (signedToken string, err error) {
+func (j *JwtEncode) GenerateRefreshToken(email string, expHour int) (signedToken string, err error) {
 	claims := &JwtClaim{
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
@@ -47,4 +48,32 @@ func (j *JwtWrap) GenerateRefreshToken(email string, expHour int) (signedToken s
 	}
 
 	return
+}
+
+func (j *JwtEncode) ValidateToken(signedToken string) (claims *JwtClaim, err error) {
+	token, err := jwt.ParseWithClaims(
+		signedToken,
+		&JwtClaim{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(j.SecretKey), nil
+		},
+	)
+
+	if err != nil {
+		return
+	}
+
+	claims, ok := token.Claims.(*JwtClaim)
+	if !ok {
+		err = errors.New("couldn't parse claims")
+		return
+	}
+
+	if claims.ExpiresAt < time.Now().Local().Unix() {
+		err = errors.New("JWT is expired")
+		return
+	}
+
+	return
+
 }
