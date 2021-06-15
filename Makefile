@@ -4,10 +4,10 @@ docker_run:
 buildFront:
 	cd ui/registration-form/ && npm run build-dev
 
-launchFront:
+startFront:
 	cd ui/registration-form/ && npm run start
 
-run:
+goRun:
 	go run cmd/main.go
 
-.PHONY: docker_run form_ui run
+.PHONY: docker_run buildFront startFront goRun

@@ -33,10 +33,13 @@ func main() {
 	checkEmailHandler := handlers.CheckBusyEmail(checkEmailRepo)
 	loginRepo := postgres.NewLoginRepository(pool)
 	loginHandler := handlers.SignIn(loginRepo, signUpRepo)
+	profileRepo := postgres.NewSignUpRepository(pool)
+	profileHandler := handlers.GetProfile(profileRepo)
 
 
 	r := mux.NewRouter()
 	r.HandleFunc("/verify", getHandler)
+	r.HandleFunc("/profile", profileHandler)
 	r.HandleFunc("/possession", checkEmailHandler)
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)

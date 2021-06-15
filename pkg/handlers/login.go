@@ -70,16 +70,16 @@ func SignIn(l *postgres.LoginRepository, repo *postgres.SignUpRepository) http.H
 			return
 		}
 
-
-
-		jwtWrapper := auth.JwtWrap{
+		jwtE := auth.JwtEncode{
 			SecretKey:       "mySecretKey",
 		}
 
-		accessToken, err := jwtWrapper.GenerateAccessToken(user.Email,30)
-		refreshToken, err := jwtWrapper.GenerateRefreshToken(user.Email,72)
+		accessToken, err := jwtE.GenerateAccessToken(user.Email,1)
+		//refreshToken, err := jwtWrapper.GenerateRefreshToken(user.Email,72)
 
-		w.Write([]byte("access token:"+ accessToken + "\n refresh token:" + refreshToken))
+		//w.Write([]byte("accessToken"+ accessToken + "refreshToken" + refreshToken))
+		w.Write([]byte(accessToken))
+
 		return
 	}
 }
