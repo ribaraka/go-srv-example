@@ -7,7 +7,7 @@ import (
 type Config struct {
 	ServerHost   string `mapstructure:"serverHost"`
 	DBURL        string `mapstructure:"dbUrl"`
-	StaticAssets string `mapstructure:"staticAssets"`
+	StaticAssets string `mapstructure:"form"`
 	Mail         MailConfig
 }
 

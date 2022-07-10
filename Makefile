@@ -1,4 +1,4 @@
-.PHONY: run, start-front, build-front
+.PHONY: run, build-front, rebuild-backend
 
 run:
 	docker-compose up

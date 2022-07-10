@@ -49,7 +49,7 @@ module.exports = {
     ],
   },
   output: {
-    path: path.resolve(__dirname, '../form'),
+    path: path.resolve(__dirname, '../../cmd/form'),
     filename: '[name].[hash].bundle.js',
   },
   plugins: [
