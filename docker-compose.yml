@@ -9,10 +9,10 @@ services:
     - db-vol:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=go_project
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=accounts
     ports:
-      - 5433:5432
+      - 5432:5432
 
   web:
     container_name: go_server
@@ -23,6 +23,7 @@ services:
       - 8081:8081
     volumes:
     - ./cmd/:/config
+    - ./ui/form:/form
     command: ["-confile",  "/config/config.yaml"]
     depends_on:
       - database
