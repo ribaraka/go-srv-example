@@ -1,7 +1,7 @@
 serverHost: "localhost:8081"
 
-dbUrl: "postgresql://postgres:password@database:5432/go_project?sslmode=disable"
-form : "/form"
+dbUrl: "postgresql://postgres:postgres@database:5432/accounts?sslmode=disable"
+front: "/form"
 
 mail:
   host: "smtp.gmail.com"

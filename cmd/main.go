@@ -36,14 +36,13 @@ func main() {
 	profileRepo := postgres.NewSignUpRepository(pool)
 	profileHandler := handlers.GetProfile(profileRepo)
 
-
 	r := mux.NewRouter()
 	r.HandleFunc("/verify", getHandler)
 	r.HandleFunc("/profile", profileHandler)
 	r.HandleFunc("/possession", checkEmailHandler)
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir(conf.StaticAssets))).Methods(http.MethodGet)
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir(conf.Front))).Methods(http.MethodGet)
 	log.Println("Server has been started...")
 	log.Fatal(http.ListenAndServe(":8081", r))
 }

@@ -5,10 +5,10 @@ import (
 )
 
 type Config struct {
-	ServerHost   string `mapstructure:"serverHost"`
-	DBURL        string `mapstructure:"dbUrl"`
-	StaticAssets string `mapstructure:"form"`
-	Mail         MailConfig
+	ServerHost string `mapstructure:"serverHost"`
+	DBURL      string `mapstructure:"dbUrl"`
+	Front      string `mapstructure:"front"`
+	Mail       MailConfig
 }
 
 type MailConfig struct {
