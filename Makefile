@@ -1,13 +1,10 @@
-docker_run:
+.PHONY: run, start-front, build-front
+
+run:
 	docker-compose up
 
-buildFront:
+build-front:
 	cd ui/registration-form/ && npm run build-dev
 
-startFront:
-	cd ui/registration-form/ && npm run start
-
-goRun:
-	go run cmd/main.go
-
-.PHONY: docker_run buildFront startFront goRun
+rebuild-backend:
+	docker-compose build web
