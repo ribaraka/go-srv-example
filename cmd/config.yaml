@@ -5,8 +5,8 @@ serverHost: "localhost:8081"
 #staticAssets : "/config/form"
 
 #config db and ui without docker
-dbUrl: "postgresql://postgres:password@localhost:5433/go_project?sslmode=disable"
-staticAssets: "./cmd/form"
+dbUrl: "postgresql://postgres:password@localhost:5432/go_project?sslmode=disable"
+staticAssets: "./ui/form"
 
 mail:
   host: "smtp.gmail.com"

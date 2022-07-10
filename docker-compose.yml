@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=go_project
     ports:
-      - 5433:5432
+      - 5432:5432
 
   web:
     container_name: go_server
