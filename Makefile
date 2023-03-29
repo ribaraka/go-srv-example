@@ -11,5 +11,5 @@ build-front:
 	cd ui/registration-form/ && npm run build-dev
 
 .PHONY: rebuild-backend
-rebuild-backend:
+build-backend:
 	docker-compose build web

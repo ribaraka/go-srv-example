@@ -8,11 +8,10 @@ import (
 )
 
 func OpenConnection(c config.Config) (*pgxpool.Pool, error) {
-	pool, err := pgxpool.Connect(context.Background(), c.DBURL)
+	pool, err := pgxpool.Connect(context.Background(), c.DbUrl)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to connection to database: %v\n", err)
 	}
 
 	return pool, nil
 }
-

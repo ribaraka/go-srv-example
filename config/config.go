@@ -6,7 +6,7 @@ import (
 
 type Config struct {
 	ServerHost string `mapstructure:"serverHost"`
-	DBURL      string `mapstructure:"dbUrl"`
+	DbUrl      string `mapstructure:"dbUrl"`
 	Front      string `mapstructure:"front"`
 	Mail       MailConfig
 }

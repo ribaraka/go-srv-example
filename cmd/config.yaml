@@ -1,6 +1,7 @@
-serverHost: "localhost:8081"
+serverHost: ":8080"
 
-dbUrl: "postgresql://postgres:postgres@database:5432/accounts?sslmode=disable"
+# should work without a port bcs all configured in doc-compose
+dbUrl: "postgresql://postgres:postgres@accounts-db/accounts?sslmode=disable"
 front: "/form"
 
 mail:
