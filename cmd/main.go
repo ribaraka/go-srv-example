@@ -43,6 +43,6 @@ func main() {
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/form", postHandler).Methods(http.MethodPost)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir(conf.Front))).Methods(http.MethodGet)
-	log.Println("Server has been started...")
-	log.Fatal(http.ListenAndServe(":8081", r))
+	log.Printf("Server has been started on %v port", conf.ServerHost)
+	log.Fatal(http.ListenAndServe(conf.ServerHost, r))
 }

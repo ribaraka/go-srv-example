@@ -1,12 +1,11 @@
 version: "3.9"
 services:
-  database:
-    image: postgres
-    container_name: database
+  accounts-db:
+    image: postgres:14.4
     restart: always
     volumes:
     - ./migration/:/docker-entrypoint-initdb.d/
-    - db-vol:/var/lib/postgresql/data/
+    - accounts:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -15,18 +14,17 @@ services:
       - 5432:5432
 
   web:
-    container_name: go_server
     build: .
     image: server
     restart: always
     ports:
-      - 8081:8081
+      - 8080:8080
     volumes:
     - ./cmd/:/config
     - ./ui/form:/form
     command: ["-confile",  "/config/config.yaml"]
     depends_on:
-      - database
+      - accounts-db
 
 volumes:
-  db-vol:
+  accounts:
